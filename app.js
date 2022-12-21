@@ -4,17 +4,21 @@ const cors = require('cors');
 const {json} = require('sequelize');
 const mysql = require('mysql');
 const app = express();
-const port = 3000;
+const port = 3010;
 
 const dotenv = require('dotenv');
 const passport = require('passport');
 const db = require('./config/database');
 const cabangModel = require('./models/cabangModel');
+const recuserModel = require('./models/recuserModel');
+const recexpModel = require('./models/recexpModel');
 
 try{
     db.authenticate();
     console.log("succes");
     cabangModel.sync();
+    recexpModel.sync();
+    recuserModel.sync();
 } catch (error){
     console.log(error);
 }
@@ -33,6 +37,8 @@ app.use('/static', express.static("public"));
 app.use(express.json());
 
 app.use('/cabang', require('./routes/cabang'));
+app.use('/recuser', require('./routes/recuser'));
+app.use('/recexp', require('./routes/recexp'));
 
 app.use(express.urlencoded({extended:true}))
 app.use(session({
